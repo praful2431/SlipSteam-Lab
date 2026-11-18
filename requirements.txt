@@ -1,0 +1,2 @@
+# Current fetch and preprocessing scripts use Python's standard library only.
+# Python 3.10 or newer is required.

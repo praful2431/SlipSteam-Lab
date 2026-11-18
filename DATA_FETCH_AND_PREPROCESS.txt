@@ -1,0 +1,411 @@
+SLIPSTREAM-LAB — DATA FETCHING AND PREPROCESSING
+Version: 0.3 (implementation draft; local review and live fetch acceptance required)
+Date: 17 November 2026
+
+======================================================================
+1. PURPOSE AND SCOPE
+======================================================================
+
+This document defines the first shared data pipeline for Slipstream-Lab.
+It covers downloading source files, preserving provenance, and producing
+standardized CSV files for the later project work packages.
+
+The pipeline is intentionally conservative:
+- Downloaded source files are preserved unchanged.
+- Source lap files are processed independently; they are not pre-aggregated.
+- No telemetry sample is silently removed, clipped, smoothed, interpolated,
+  resampled, or corrected.
+- Missing values and parsing issues are reported.
+- Every processed record retains event/session/lap/sample identifiers where
+  those identifiers can be established from the source.
+- Car position and track geometry are kept separate until their coordinate
+  frames and layout references are validated.
+- Derived values are distinguishable from source values.
+
+This is a pipeline implementation draft, not a final cleaning methodology or
+research-method claim.
+
+======================================================================
+2. SOURCE REPOSITORY AND VERSION CONTROL
+======================================================================
+
+Primary source:
+https://github.com/TracingInsights/2026
+
+Upstream field reference:
+https://github.com/TracingInsights/2026/blob/main/DATA_REFERENCE.md
+
+Machine-readable source dictionary:
+https://github.com/TracingInsights/2026/blob/main/data_dictionary.json
+
+The fetcher:
+1. Reads the repository's default branch and current commit SHA.
+2. Discovers event/session files using the GitHub Git Tree API.
+3. Downloads raw bytes from raw.githubusercontent.com using the resolved
+   commit SHA, not a moving branch name.
+4. Saves a fetch manifest containing the source commit, source paths, URLs,
+   file sizes, SHA-256 hashes, statuses, and failures.
+
+This pins a fetch run to one repository revision. An unauthenticated GitHub API
+rate limit or network failure can still interrupt the download; failures are
+reported rather than treated as successful fetches.
+
+======================================================================
+3. FETCHED FILES
+======================================================================
+
+A. Kimi Antonelli driver-level files
+
+For the selected driver (default code ANT), the fetcher downloads, where
+present, from each event/session:
+- <lap_number>_tel.json — one file per lap
+- laptimes.json — driver-level lap timing, where available
+
+The original lap JSON is retained. It is not combined by the fetcher.
+
+B. Session-level files
+
+The fetcher requests these files when present:
+- session_info.json
+- session_laptimes.json
+- weather.json
+- rcm.json
+- corners.json
+- cor.json (optional legacy marker file)
+- drivers.json (optional static driver metadata)
+- team_radio.json (optional selected-clip index)
+
+session_laptimes.json is the session-wide timing table and can contain records
+for every driver. It is retained in full for benchmarking/context. The Kimi
+telemetry join uses the driver code and lap number.
+
+team_radio.json is an index of selected broadcast clips. It is not a complete
+team-radio transcript or exhaustive communications log. This fetcher does not
+download MP3 audio. Video downloads and manual video annotation are outside this
+pipeline.
+
+C. Circuit section data and source references
+
+The fetcher reads EVENT_SECTIONS_FILE from the upstream SQ.py file, preserves
+SQ.py and its parsed mapping, and fetches the mapped sections/<circuit>.json
+file where available. It also stores DATA_REFERENCE.md and data_dictionary.json.
+
+Section categories such as Straight, Low, Medium and High describe the source
+track-section classification. They are not treated as active-aero activation
+zones without separate evidence.
+
+======================================================================
+4. RAW DIRECTORY AND PROVENANCE CONTRACT
+======================================================================
+
+Raw files are stored under:
+
+data/raw/tracinginsights_2026/
+
+Example:
+
+data/raw/tracinginsights_2026/
+  Australian Grand Prix/
+    Qualifying/
+      session_info.json
+      session_laptimes.json
+      weather.json
+      rcm.json
+      corners.json
+      cor.json
+      drivers.json
+      team_radio.json
+      ANT/
+        1_tel.json
+        2_tel.json
+        ...
+        laptimes.json
+  sections/
+    albert-park-circuit.json
+  references/
+    SQ.py
+    event_section_mapping.json
+    DATA_REFERENCE.md
+    data_dictionary.json
+
+Actual availability varies by session. The manifest records which files were
+found, skipped, downloaded, or failed.
+
+Circuit SVG/WebP map images and the older event/circuit image maps supplied during
+project setup are visual reference assets, not inputs fetched by this script.
+When needed, preserve them separately under `data/raw/local_reference_maps/`
+with original filenames and provenance. They are not used to derive telemetry
+coordinates or track distances by this pipeline.
+
+Do not edit files under data/raw/. If a source commit changes, run a full refresh
+with `--force` and no event filter. The fetcher clears the old fetched raw snapshot
+before downloading the new commit, preventing stale files from being mixed in. Do
+not mix selected event downloads from different commits. If raw files exist but no fetch manifest is available, move or remove that
+untracked raw folder before fetching so their source revision is not guessed.
+The fetcher intentionally refuses to overwrite untracked raw files.
+
+Raw data is excluded from Git by default because the complete telemetry set may
+be large. Keep it locally or distribute it through an agreed shared-storage
+location. Do not commit source data without checking size, licensing, and team
+agreement.
+
+======================================================================
+5. TIME STANDARD AND ALIGNMENT
+======================================================================
+
+The `time` field in each <lap_number>_tel.json file is lap-relative time. It is
+not elapsed session time.
+
+The session-wide/driver laptime row contains:
+- `lST`: lap start time relative to the session clock, in seconds
+- `lSD`: calendar timestamp for the lap start
+- `sesT`: lap end time relative to the session clock, in seconds
+- `iacc`: source flag indicating whether the lap timing alignment is considered
+  accurate by the upstream extraction process
+
+session_info.json contains `t0_date`, the UTC date/time at session time zero.
+
+For a unique driver/lap match with an available lST:
+
+  session_time_s = lST + lap_time_s
+  timestamp_utc  = t0_date + session_time_s
+
+The join is by driver code and lap number. If the match is missing, ambiguous,
+or does not contain lST, session_time_s and timestamp_utc remain blank and the
+row is flagged. The pipeline does not estimate missing lap starts by adding the
+previous lap's final sample time.
+
+The source iacc flag is retained with each sample. All laps are retained, including
+iacc=false laps. The indicator remains available for downstream filtering or
+sensitivity analysis; it is not duplicated as a per-sample quality flag. The
+lap_timing_audit.csv provides per-lap checks including:
+- source lSD versus t0_date + lST difference
+- source iacc status
+- source lap time and sesT
+- first and last telemetry lap-relative times
+- last telemetry sample versus source sesT
+
+The Australian Qualifying sample supplied for this project has 18 Kimi laptime
+records. All 18 have t0_date + lST matching lSD at the precision present in the
+supplied data. However, 13 of those 18 records have iacc=false. The pipeline
+preserves this distinction: the start timestamp cross-check is recorded, while
+the upstream timing-quality warning is retained.
+
+The `session_start_time` field is kept as separate session metadata. It is not
+the same field as t0_date.
+
+Race-control `time` is retained exactly as source_timestamp. In the sample it is
+an ISO timestamp; the preprocessor normalizes it to timestamp_utc and derives
+session_time_s by subtracting t0_date. If a source uses numeric session-relative
+seconds instead, that numeric value is retained as session_time_s and converted
+to UTC only when t0_date is available.
+
+Weather `wT`, session-status `Time`, and track-status `Time` are already
+session-relative seconds. They are not recalculated from wall-clock time.
+
+======================================================================
+6. PREPROCESSING BEHAVIOUR
+======================================================================
+
+Run preprocess_data.py only on files under data/raw/. It writes to data/processed/
+and never modifies the raw files.
+
+For each event/session it:
+1. Reads each Kimi per-lap telemetry JSON independently.
+2. Preserves sample order and adds event, session, driver, lap, and sample IDs.
+3. Converts known source fields to standardized names and types.
+4. Retains unknown telemetry fields as source_<field_name> columns.
+5. Matches each telemetry lap to the unique driver/lap timing row.
+6. Derives session_time_s and timestamp_utc from lST, lap-relative time, and t0_date.
+7. Retains the source iacc status and writes lap-timing audit diagnostics.
+8. Exports session laptimes, weather, race control, status transitions, track
+   outline, corners, marshal markers, mini-sector indices, track sections,
+   driver metadata, and a team-radio clip index into separate CSVs when sources exist.
+9. Writes a session summary and a whole-run preprocessing report.
+
+No values are clipped, smoothed, interpolated, resampled, or imputed in this
+initial pipeline. Missing values remain blank; incomplete rows are not deleted.
+Throttle values are preserved exactly as received, with no clamping, rescaling,
+or additional per-sample out-of-range flags. Brake is retained as the source
+binary applied/not-applied representation.
+
+======================================================================
+7. COMMON TELEMETRY CSV
+======================================================================
+
+kimi_telemetry.csv has one row per Kimi telemetry sample. Core fields include:
+
+Identity and time:
+- event_name, session_name, driver_code, driver_number
+- lap_number, sample_index_in_lap
+- lap_time_s, lap_start_time_s, session_time_s, timestamp_utc
+- time_alignment_status, lap_timing_alignment_accurate
+
+Vehicle and driver inputs:
+- engine_rpm
+- speed_kmh
+- gear
+- throttle_source_pct
+- brake_applied
+- drs_status
+
+Position and dynamics:
+- car_x_m, car_y_m, car_z_m
+- acc_x_mps2, acc_y_mps2, acc_z_mps2
+- lap_distance_m, lap_relative_distance
+- distance_to_driver_ahead_m, driver_ahead_code
+
+Provenance/quality:
+- data_key
+- quality_flags
+- any unrecognized source channels with a source_ prefix
+
+Speed remains in km/h as agreed for the project. Car XYZ are source telemetry
+coordinates in metres. The upstream documentation describes acc_x/acc_y/acc_z
+as derived and processed values, not raw IMU sensor readings.
+
+======================================================================
+8. TRACK DATA AND COORDINATE LIMITS
+======================================================================
+
+The preprocessor exports track geometry from corners.json separately from the
+car telemetry:
+- track_outline.csv: TrackX, TrackY, optional TrackZ, TrackTime
+- track_corners.csv: corner marker attributes and coordinates
+- track_markers.csv: corners/marshal lights/marshal sectors from cor.json
+- track_minisectors.csv: MiniSectorIndex values, preserving source indices
+- track_sections.csv: mapped section type and percentage bands
+- track_section_reference.csv: SectionType/StartPercent/EndPercent and the
+  source StartDistance/EndDistance arrays in corners.json
+
+The supplied Australian sample has 618 TrackX and 618 TrackY values, no TrackZ,
+14 corner markers, 54 legacy marker records, 22 mini-sector indices, and 14
+section bands. The current upstream field reference documents TrackX, TrackY,
+TrackTime, and MiniSectorIndex, but does not document TrackZ. The parser accepts
+an optional TrackZ array if one appears in a future source file; it is never
+fabricated.
+
+The upstream reference describes TrackX/TrackY as using the same units as
+corner X/Y, and corner X/Y are metres. Car XYZ are also documented in metres.
+However, common units alone do not prove that the car and track coordinates have
+the same origin, orientation, or coordinate frame. corners.json includes a
+Rotation value that may be used to align telemetry position to the official
+track-map orientation, but this pipeline does not apply it automatically.
+
+TrackTime is the elapsed time along the layout's reference lap, not Kimi's lap
+time. The layout metadata (LayoutYear, LayoutLapSession, reference lap time,
+start time, etc.) is retained in session_summary.json because the geometry can
+refer to an earlier published layout/reference lap rather than the current
+session. Validate the layout before joining track geometry to current telemetry.
+
+No rotation, translation, scale adjustment, nearest-point projection, lateral
+offset, or elevation reconstruction is performed by preprocessing.
+
+======================================================================
+9. PROCESSED DIRECTORY AND OUTPUTS
+======================================================================
+
+Outputs are grouped by event and session:
+
+data/processed/<event_slug>/<session_slug>/
+  kimi_telemetry.csv
+  lap_timing_audit.csv          (when telemetry lap files exist)
+  session_laptimes.csv
+  weather.csv
+  race_control.csv
+  track_status.csv
+  session_status.csv
+  track_outline.csv
+  track_corners.csv
+  track_markers.csv
+  track_minisectors.csv
+  track_sections.csv
+  track_section_reference.csv
+  drivers.csv                  (when drivers.json exists)
+  team_radio.csv               (when team_radio.json exists; metadata only)
+  session_summary.json
+
+Outputs whose source files do not exist are omitted. A missing optional `cor.json`, `drivers.json`, or
+`team_radio.json` is recorded as an optional absence in the fetch manifest, not as a
+fetch failure. Kimi telemetry contains only
+the selected driver; session_laptimes.csv retains all drivers. `drivers.csv` and
+`team_radio.csv` retain session context. The radio CSV is an index of selected
+broadcast clips, not the audio itself.
+
+Run-level reports:
+- reports/fetch_manifest.json
+- reports/preprocessing_report.json
+
+======================================================================
+10. HOW TO RUN
+======================================================================
+
+Requirements: Python 3.10 or newer. The fetcher, preprocessor, and tests use only
+the Python standard library; no pip installation is required.
+Run from the Slipstream-Lab repository root:
+
+Fetch all discovered Grand Prix sessions for Kimi:
+  python fetch_data.py
+
+Fetch one event:
+  python fetch_data.py --event "Australian Grand Prix"
+
+Refresh raw files from the same source revision:
+  python fetch_data.py --force
+
+If the upstream commit changes, a full refresh is required:
+  python fetch_data.py --force
+
+Preprocess all downloaded event/session folders:
+  python preprocess_data.py
+
+Preprocess one event/session:
+  python preprocess_data.py --event "Australian Grand Prix" --session "Qualifying"
+
+Run local tests:
+  python -m unittest discover -s tests -v
+
+======================================================================
+11. KNOWN GAPS AND HUMAN REVIEW REQUIRED
+======================================================================
+
+1. Verify fetched files and source revision in reports/fetch_manifest.json after
+   the first live fetch. The GitHub layout can change.
+2. Throttle values are preserved exactly as received. The source documentation
+   describes a 0-100 range, but the pipeline does not modify or per-sample flag
+   values outside that range.
+3. Retain the source iacc indicator and consider it when evaluating timing-sensitive
+   features; do not automatically discard iacc=false laps.
+4. Validate car XYZ against track XY: coordinate frame, rotation, origin, layout
+   year, and reference-lap conventions must be checked first.
+5. TrackZ was not present in the supplied Australian sample. Do not fabricate it.
+6. team_radio.json is a selected broadcast-clip index, not a full transcript.
+   The metadata is exported to team_radio.csv, but MP3 audio and onboard/broadcast
+   videos are not downloaded by this pipeline. Only selected broadcast clips are
+   represented in this source. [Upstream data reference](https://github.com/TracingInsights/2026/blob/main/DATA_REFERENCE.md)
+7. Track sections Straight/Low/Medium/High are not automatically active-aero
+   activation zones.
+8. The inspected public telemetry does not provide actual ERS deployment or
+   battery SoC. This pipeline does not infer either one.
+9. The pipeline does not identify super clipping, regen, lift-and-coast, or
+   partial-throttle overload events. Those are later analysis tasks.
+10. The old combined australiaq.csv is retained only as a comparison sample;
+    it is not the new source of truth. Use per-lap raw JSON and lap timing joins.
+
+Any changes to these shared outputs or their definitions must be reviewed before
+the four work packages are assigned.
+
+======================================================================
+12. UPSTREAM REFERENCES
+======================================================================
+
+Repository:
+https://github.com/TracingInsights/2026
+
+Field documentation:
+https://github.com/TracingInsights/2026/blob/main/DATA_REFERENCE.md
+
+Machine-readable dictionary:
+https://github.com/TracingInsights/2026/blob/main/data_dictionary.json
+
+END OF DOCUMENT

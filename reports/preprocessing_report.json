@@ -1,0 +1,495 @@
+{
+  "project": "Slipstream-Lab",
+  "processed_at_utc": "2026-11-17T17:12:38+00:00",
+  "driver_code": "ANT",
+  "raw_root": "data/raw/tracinginsights_2026",
+  "processed_root": "data/processed",
+  "session_count": 5,
+  "error_count": 0,
+  "sessions": [
+    {
+      "event_name": "Australian Grand Prix",
+      "session_name": "Practice 1",
+      "driver_code_processed": "ANT",
+      "session_clock_origin_utc": "2026-03-06T01:15:00.012Z",
+      "session_start_time_s": 900.171,
+      "total_laps": null,
+      "session_info": {
+        "Meeting": {
+          "Key": 1279,
+          "Name": "Australian Grand Prix",
+          "OfficialName": "FORMULA 1 QATAR AIRWAYS AUSTRALIAN GRAND PRIX 2026",
+          "Location": "Melbourne",
+          "Number": 1,
+          "Country": {
+            "Key": 5,
+            "Code": "AUS",
+            "Name": "Australia"
+          },
+          "Circuit": {
+            "Key": 10,
+            "ShortName": "Melbourne"
+          }
+        },
+        "SessionStatus": "Inactive",
+        "ArchiveStatus": {
+          "Status": "Generating"
+        },
+        "Key": 11227,
+        "Type": "Practice",
+        "Number": 1,
+        "Name": "Practice 1",
+        "StartDate": "2026-03-06T12:30:00",
+        "EndDate": "2026-03-06T13:30:00",
+        "GmtOffset": "11:00:00",
+        "Path": "2026/2026-03-08_Australian_Grand_Prix/2026-03-06_Practice_1/"
+      },
+      "outputs": {
+        "kimi_telemetry_rows": 29360,
+        "session_laptime_rows_all_drivers": 487,
+        "weather_rows": 82,
+        "race_control_rows": 43,
+        "driver_rows": 21,
+        "team_radio_clip_rows": 0,
+        "track_status_rows": 15,
+        "session_status_rows": 5,
+        "track_marker_rows": 54,
+        "track_section_rows": 14,
+        "track_section_reference_rows": 14,
+        "track_minisector_rows": 22,
+        "lap_timing_audit_rows": 24
+      },
+      "track_geometry": {
+        "source_file": "Australian Grand Prix/Practice 1/corners.json",
+        "track_point_count": 618,
+        "track_z_available": false,
+        "warnings": [],
+        "track_x_point_count": 618,
+        "track_y_point_count": 618,
+        "track_z_point_count": 0,
+        "track_rotation_deg": 44.0,
+        "track_time_point_count": 0,
+        "mini_sector_count": 22,
+        "layout_reference": {
+          "layout_year": 2022,
+          "layout_round": 3,
+          "layout_race_date": "2022-04-10",
+          "layout_meeting_name": "Australian Grand Prix",
+          "layout_lap_driver_number": "1",
+          "layout_lap_number": 2,
+          "layout_lap_session": "FP1",
+          "layout_lap_time_s": 83.101,
+          "layout_lap_start_date": "2022-04-08T03:04:18.874000",
+          "layout_lap_start_session_time_s": 1158.86,
+          "layout_lap_session_start_time_s": 900.417
+        },
+        "corner_count": 14,
+        "section_band_count": 14
+      },
+      "telemetry_quality": {
+        "telemetry_files": 24,
+        "rows": 29360,
+        "laps_with_unique_timing_match": 24,
+        "laps_without_timing_match": 0,
+        "laps_with_ambiguous_timing_match": 0,
+        "laps_with_iacc_false": 13,
+        "laps_with_iacc_missing": 0,
+        "missing_session_clock_origin": false,
+        "missing_required_source_fields": {},
+        "missing_sample_values_by_field": {},
+        "invalid_numeric_values": {},
+        "throttle_source_values_outside_0_100": 7017,
+        "lap_timing_audit_rows": 24
+      },
+      "warnings": [],
+      "timing_note": "session_time_s = lST + lap_elapsed_s, where lap_elapsed_s is the telemetry sample time and lST comes from the matched driver/lap record in session_laptimes.json. The session_laptimes.csv lap_time_s is completed-lap duration."
+    },
+    {
+      "event_name": "Australian Grand Prix",
+      "session_name": "Practice 2",
+      "driver_code_processed": "ANT",
+      "session_clock_origin_utc": "2026-03-06T04:47:12.180Z",
+      "session_start_time_s": 767.995,
+      "total_laps": null,
+      "session_info": {
+        "Meeting": {
+          "Key": 1279,
+          "Name": "Australian Grand Prix",
+          "OfficialName": "FORMULA 1 QATAR AIRWAYS AUSTRALIAN GRAND PRIX 2026",
+          "Location": "Melbourne",
+          "Number": 1,
+          "Country": {
+            "Key": 5,
+            "Code": "AUS",
+            "Name": "Australia"
+          },
+          "Circuit": {
+            "Key": 10,
+            "ShortName": "Melbourne"
+          }
+        },
+        "SessionStatus": "Inactive",
+        "ArchiveStatus": {
+          "Status": "Generating"
+        },
+        "Key": 11228,
+        "Type": "Practice",
+        "Number": 2,
+        "Name": "Practice 2",
+        "StartDate": "2026-03-06T16:00:00",
+        "EndDate": "2026-03-06T17:00:00",
+        "GmtOffset": "11:00:00",
+        "Path": "2026/2026-03-08_Australian_Grand_Prix/2026-03-06_Practice_2/"
+      },
+      "outputs": {
+        "kimi_telemetry_rows": 28809,
+        "session_laptime_rows_all_drivers": 544,
+        "weather_rows": 79,
+        "race_control_rows": 46,
+        "driver_rows": 22,
+        "team_radio_clip_rows": 1,
+        "track_status_rows": 8,
+        "session_status_rows": 5,
+        "track_marker_rows": 54,
+        "track_section_rows": 14,
+        "track_section_reference_rows": 14,
+        "track_minisector_rows": 22,
+        "lap_timing_audit_rows": 31
+      },
+      "track_geometry": {
+        "source_file": "Australian Grand Prix/Practice 2/corners.json",
+        "track_point_count": 618,
+        "track_z_available": false,
+        "warnings": [],
+        "track_x_point_count": 618,
+        "track_y_point_count": 618,
+        "track_z_point_count": 0,
+        "track_rotation_deg": 44.0,
+        "track_time_point_count": 0,
+        "mini_sector_count": 22,
+        "layout_reference": {
+          "layout_year": 2022,
+          "layout_round": 3,
+          "layout_race_date": "2022-04-10",
+          "layout_meeting_name": "Australian Grand Prix",
+          "layout_lap_driver_number": "1",
+          "layout_lap_number": 2,
+          "layout_lap_session": "FP1",
+          "layout_lap_time_s": 83.101,
+          "layout_lap_start_date": "2022-04-08T03:04:18.874000",
+          "layout_lap_start_session_time_s": 1158.86,
+          "layout_lap_session_start_time_s": 900.417
+        },
+        "corner_count": 14,
+        "section_band_count": 14
+      },
+      "telemetry_quality": {
+        "telemetry_files": 31,
+        "rows": 28809,
+        "laps_with_unique_timing_match": 31,
+        "laps_without_timing_match": 0,
+        "laps_with_ambiguous_timing_match": 0,
+        "laps_with_iacc_false": 11,
+        "laps_with_iacc_missing": 0,
+        "missing_session_clock_origin": false,
+        "missing_required_source_fields": {},
+        "missing_sample_values_by_field": {},
+        "invalid_numeric_values": {},
+        "throttle_source_values_outside_0_100": 4413,
+        "lap_timing_audit_rows": 31
+      },
+      "warnings": [],
+      "timing_note": "session_time_s = lST + lap_elapsed_s, where lap_elapsed_s is the telemetry sample time and lST comes from the matched driver/lap record in session_laptimes.json. The session_laptimes.csv lap_time_s is completed-lap duration."
+    },
+    {
+      "event_name": "Australian Grand Prix",
+      "session_name": "Practice 3",
+      "driver_code_processed": "ANT",
+      "session_clock_origin_utc": "2026-03-07T01:24:00.062Z",
+      "session_start_time_s": 1560.124,
+      "total_laps": null,
+      "session_info": {
+        "Meeting": {
+          "Key": 1279,
+          "Name": "Australian Grand Prix",
+          "OfficialName": "FORMULA 1 QATAR AIRWAYS AUSTRALIAN GRAND PRIX 2026",
+          "Location": "Melbourne",
+          "Number": 1,
+          "Country": {
+            "Key": 5,
+            "Code": "AUS",
+            "Name": "Australia"
+          },
+          "Circuit": {
+            "Key": 10,
+            "ShortName": "Melbourne"
+          }
+        },
+        "SessionStatus": "Inactive",
+        "ArchiveStatus": {
+          "Status": "Generating"
+        },
+        "Key": 11229,
+        "Type": "Practice",
+        "Number": 3,
+        "Name": "Practice 3",
+        "StartDate": "2026-03-07T12:30:00",
+        "EndDate": "2026-03-07T13:30:00",
+        "GmtOffset": "11:00:00",
+        "Path": "2026/2026-03-08_Australian_Grand_Prix/2026-03-07_Practice_3/"
+      },
+      "outputs": {
+        "kimi_telemetry_rows": 20867,
+        "session_laptime_rows_all_drivers": 377,
+        "weather_rows": 90,
+        "race_control_rows": 60,
+        "driver_rows": 21,
+        "team_radio_clip_rows": 1,
+        "track_status_rows": 15,
+        "session_status_rows": 11,
+        "track_marker_rows": 54,
+        "track_section_rows": 14,
+        "track_section_reference_rows": 14,
+        "track_minisector_rows": 22,
+        "lap_timing_audit_rows": 18
+      },
+      "track_geometry": {
+        "source_file": "Australian Grand Prix/Practice 3/corners.json",
+        "track_point_count": 618,
+        "track_z_available": false,
+        "warnings": [],
+        "track_x_point_count": 618,
+        "track_y_point_count": 618,
+        "track_z_point_count": 0,
+        "track_rotation_deg": 44.0,
+        "track_time_point_count": 0,
+        "mini_sector_count": 22,
+        "layout_reference": {
+          "layout_year": 2022,
+          "layout_round": 3,
+          "layout_race_date": "2022-04-10",
+          "layout_meeting_name": "Australian Grand Prix",
+          "layout_lap_driver_number": "1",
+          "layout_lap_number": 2,
+          "layout_lap_session": "FP1",
+          "layout_lap_time_s": 83.101,
+          "layout_lap_start_date": "2022-04-08T03:04:18.874000",
+          "layout_lap_start_session_time_s": 1158.86,
+          "layout_lap_session_start_time_s": 900.417
+        },
+        "corner_count": 14,
+        "section_band_count": 14
+      },
+      "telemetry_quality": {
+        "telemetry_files": 18,
+        "rows": 20867,
+        "laps_with_unique_timing_match": 18,
+        "laps_without_timing_match": 0,
+        "laps_with_ambiguous_timing_match": 0,
+        "laps_with_iacc_false": 10,
+        "laps_with_iacc_missing": 0,
+        "missing_session_clock_origin": false,
+        "missing_required_source_fields": {},
+        "missing_sample_values_by_field": {},
+        "invalid_numeric_values": {},
+        "throttle_source_values_outside_0_100": 3248,
+        "lap_timing_audit_rows": 18
+      },
+      "warnings": [],
+      "timing_note": "session_time_s = lST + lap_elapsed_s, where lap_elapsed_s is the telemetry sample time and lST comes from the matched driver/lap record in session_laptimes.json. The session_laptimes.csv lap_time_s is completed-lap duration."
+    },
+    {
+      "event_name": "Australian Grand Prix",
+      "session_name": "Qualifying",
+      "driver_code_processed": "ANT",
+      "session_clock_origin_utc": "2026-03-07T04:47:18.712Z",
+      "session_start_time_s": 761.484,
+      "total_laps": null,
+      "session_info": {
+        "Meeting": {
+          "Key": 1279,
+          "Name": "Australian Grand Prix",
+          "OfficialName": "FORMULA 1 QATAR AIRWAYS AUSTRALIAN GRAND PRIX 2026",
+          "Location": "Melbourne",
+          "Number": 1,
+          "Country": {
+            "Key": 5,
+            "Code": "AUS",
+            "Name": "Australia"
+          },
+          "Circuit": {
+            "Key": 10,
+            "ShortName": "Melbourne"
+          }
+        },
+        "SessionStatus": "Inactive",
+        "ArchiveStatus": {
+          "Status": "Generating"
+        },
+        "Key": 11230,
+        "Type": "Qualifying",
+        "Name": "Qualifying",
+        "StartDate": "2026-03-07T16:00:00",
+        "EndDate": "2026-03-07T17:00:00",
+        "GmtOffset": "11:00:00",
+        "Path": "2026/2026-03-08_Australian_Grand_Prix/2026-03-07_Qualifying/"
+      },
+      "outputs": {
+        "kimi_telemetry_rows": 26815,
+        "session_laptime_rows_all_drivers": 355,
+        "weather_rows": 95,
+        "race_control_rows": 99,
+        "driver_rows": 20,
+        "team_radio_clip_rows": 0,
+        "track_status_rows": 15,
+        "session_status_rows": 17,
+        "track_marker_rows": 54,
+        "track_section_rows": 14,
+        "track_section_reference_rows": 14,
+        "track_minisector_rows": 22,
+        "lap_timing_audit_rows": 18
+      },
+      "track_geometry": {
+        "source_file": "Australian Grand Prix/Qualifying/corners.json",
+        "track_point_count": 618,
+        "track_z_available": false,
+        "warnings": [],
+        "track_x_point_count": 618,
+        "track_y_point_count": 618,
+        "track_z_point_count": 0,
+        "track_rotation_deg": 44.0,
+        "track_time_point_count": 0,
+        "mini_sector_count": 22,
+        "layout_reference": {
+          "layout_year": 2022,
+          "layout_round": 3,
+          "layout_race_date": "2022-04-10",
+          "layout_meeting_name": "Australian Grand Prix",
+          "layout_lap_driver_number": "1",
+          "layout_lap_number": 2,
+          "layout_lap_session": "FP1",
+          "layout_lap_time_s": 83.101,
+          "layout_lap_start_date": "2022-04-08T03:04:18.874000",
+          "layout_lap_start_session_time_s": 1158.86,
+          "layout_lap_session_start_time_s": 900.417
+        },
+        "corner_count": 14,
+        "section_band_count": 14
+      },
+      "telemetry_quality": {
+        "telemetry_files": 18,
+        "rows": 26815,
+        "laps_with_unique_timing_match": 18,
+        "laps_without_timing_match": 0,
+        "laps_with_ambiguous_timing_match": 0,
+        "laps_with_iacc_false": 12,
+        "laps_with_iacc_missing": 0,
+        "missing_session_clock_origin": false,
+        "missing_required_source_fields": {},
+        "missing_sample_values_by_field": {},
+        "invalid_numeric_values": {},
+        "throttle_source_values_outside_0_100": 9865,
+        "lap_timing_audit_rows": 18
+      },
+      "warnings": [],
+      "timing_note": "session_time_s = lST + lap_elapsed_s, where lap_elapsed_s is the telemetry sample time and lST comes from the matched driver/lap record in session_laptimes.json. The session_laptimes.csv lap_time_s is completed-lap duration."
+    },
+    {
+      "event_name": "Australian Grand Prix",
+      "session_name": "Race",
+      "driver_code_processed": "ANT",
+      "session_clock_origin_utc": "2026-03-08T03:01:06.623Z",
+      "session_start_time_s": 3739.743,
+      "total_laps": 58,
+      "session_info": {
+        "Meeting": {
+          "Key": 1279,
+          "Name": "Australian Grand Prix",
+          "OfficialName": "FORMULA 1 QATAR AIRWAYS AUSTRALIAN GRAND PRIX 2026",
+          "Location": "Melbourne",
+          "Number": 1,
+          "Country": {
+            "Key": 5,
+            "Code": "AUS",
+            "Name": "Australia"
+          },
+          "Circuit": {
+            "Key": 10,
+            "ShortName": "Melbourne"
+          }
+        },
+        "SessionStatus": "Inactive",
+        "ArchiveStatus": {
+          "Status": "Generating"
+        },
+        "Key": 11234,
+        "Type": "Race",
+        "Name": "Race",
+        "StartDate": "2026-03-08T15:00:00",
+        "EndDate": "2026-03-08T17:00:00",
+        "GmtOffset": "11:00:00",
+        "Path": "2026/2026-03-08_Australian_Grand_Prix/2026-03-08_Race/"
+      },
+      "outputs": {
+        "kimi_telemetry_rows": 37569,
+        "session_laptime_rows_all_drivers": 1008,
+        "weather_rows": 148,
+        "race_control_rows": 167,
+        "driver_rows": 20,
+        "team_radio_clip_rows": 0,
+        "track_status_rows": 26,
+        "session_status_rows": 5,
+        "track_marker_rows": 54,
+        "track_section_rows": 14,
+        "track_section_reference_rows": 14,
+        "track_minisector_rows": 22,
+        "lap_timing_audit_rows": 58
+      },
+      "track_geometry": {
+        "source_file": "Australian Grand Prix/Race/corners.json",
+        "track_point_count": 618,
+        "track_z_available": false,
+        "warnings": [],
+        "track_x_point_count": 618,
+        "track_y_point_count": 618,
+        "track_z_point_count": 0,
+        "track_rotation_deg": 44.0,
+        "track_time_point_count": 0,
+        "mini_sector_count": 22,
+        "layout_reference": {
+          "layout_year": 2022,
+          "layout_round": 3,
+          "layout_race_date": "2022-04-10",
+          "layout_meeting_name": "Australian Grand Prix",
+          "layout_lap_driver_number": "1",
+          "layout_lap_number": 2,
+          "layout_lap_session": "FP1",
+          "layout_lap_time_s": 83.101,
+          "layout_lap_start_date": "2022-04-08T03:04:18.874000",
+          "layout_lap_start_session_time_s": 1158.86,
+          "layout_lap_session_start_time_s": 900.417
+        },
+        "corner_count": 14,
+        "section_band_count": 14
+      },
+      "telemetry_quality": {
+        "telemetry_files": 58,
+        "rows": 37569,
+        "laps_with_unique_timing_match": 58,
+        "laps_without_timing_match": 0,
+        "laps_with_ambiguous_timing_match": 0,
+        "laps_with_iacc_false": 9,
+        "laps_with_iacc_missing": 0,
+        "missing_session_clock_origin": false,
+        "missing_required_source_fields": {},
+        "missing_sample_values_by_field": {},
+        "invalid_numeric_values": {},
+        "throttle_source_values_outside_0_100": 100,
+        "lap_timing_audit_rows": 58
+      },
+      "warnings": [],
+      "timing_note": "session_time_s = lST + lap_elapsed_s, where lap_elapsed_s is the telemetry sample time and lST comes from the matched driver/lap record in session_laptimes.json. The session_laptimes.csv lap_time_s is completed-lap duration."
+    }
+  ],
+  "errors": []
+}

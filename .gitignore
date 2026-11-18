@@ -1,0 +1,56 @@
+# Python cache
+__pycache__/
+*.py[cod]
+*.pyo
+
+# Virtual environments
+.venv/
+venv/
+env/
+
+# Environment variables and secrets
+.env
+.env.*
+!.env.example
+
+# Logs
+*.log
+
+# IDE and editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Testing and linting
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Build files
+build/
+dist/
+*.egg-info/
+
+# Raw source data - keep local
+data/raw/*
+!data/raw/.gitkeep
+
+# Local reference maps - keep folder, ignore its contents
+!data/raw/local_reference_maps/
+data/raw/local_reference_maps/*
+!data/raw/local_reference_maps/.gitkeep
+
+# Generated processed datasets - keep local for now
+data/processed/*
+!data/processed/.gitkeep

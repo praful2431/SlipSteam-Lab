@@ -1,8 +1,8 @@
 # Slipstream-Lab — Project Standardization
 
 **Document:** Project-Wide Standardization (PSD)  
-**Version:** 0.2 — Draft for team use  
-**Status:** Approved baseline; data pipeline specification pending  
+**Version:** 0.3 — Approved baseline  
+**Status:** Approved baseline; data-pipeline contract established in Checkpoint 2  
 **Repository:** `Slipstream-Lab`
 
 ---
@@ -34,11 +34,13 @@ A library or algorithm outside this list may be used when there is a clear reaso
 3. Use CSV as the default format for data exchanged between modules.
 4. If a dataset becomes too large or CSV causes a practical performance or storage problem, document the issue and propose an alternative before changing the shared format.
 5. Preserve original source fields wherever practical. Derived or transformed fields must be identifiable and documented.
-6. Do not silently drop, replace, interpolate, or fabricate missing values.
-7. Record cleaning, filtering, interpolation, resampling, coordinate transformations, and unit conversions.
+6. Preserve missing values as blanks in the initial pipeline. Do not interpolate or delete incomplete rows.
+7. Preserve source throttle values exactly; do not clamp, rescale, or add per-sample out-of-range flags.
+8. Retain all laps and the source `iacc` indicator; do not automatically exclude `iacc=false` laps.
+9. Record any later cleaning, filtering, interpolation, resampling, coordinate transformations, and unit conversions.
 8. Keep a traceable relationship between processed records and their source data.
 
-**Data fetching and preprocessing are not specified by this document.** They will be rebuilt and documented separately before the four work packages begin. The resulting pipeline documentation and dataset schema will become a shared project contract.
+The approved data-pipeline contract is documented in `DATA_FETCH_AND_PREPROCESS.txt` and `docs/data_pipeline/`. Fetch one event at a time (all available sessions), preserve all original JSON, export separate category CSVs, retain missing values as blanks, preserve throttle values exactly, and retain all laps with the source `iacc` indicator. Raw source files are immutable.
 
 ## 4. Units and naming conventions
 
